@@ -28,10 +28,12 @@ void Searchtitle(const FunctionCallbackInfo<Value>& args) {
 }
 
 void Init(Handle<Object> exports) {
-  clean_file("lines17.txt");
-  populate_trie("clean.txt");
+  populate_stop_words();
+  clean_file();
+  populate_trie();
   populate_vecs();
   compute_norm();
+  populate_db();
   NODE_SET_METHOD(exports, "searchtitle", Searchtitle);
 }
 

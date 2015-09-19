@@ -1,7 +1,8 @@
 #include "distance.h"
 
-unordered_set< string > stop_words;
+set< string > stop_words;
 vector<string> the_titles;
+
 int populate_stop_words(){
   ifstream myfile;
   string word;
@@ -11,6 +12,7 @@ int populate_stop_words(){
       myfile >> word;
       stop_words.insert(word);
     }
+    myfile.close();
   }else
     cout << "unable to open file lemur_stopwords!" << endl;
   return 0;
@@ -29,11 +31,10 @@ string to_lowercase(string word){
   return ret_str;
 }
 
-int clean_file(string file_to_clean) {
+int clean_file() {
   string line, word, dest_line, dest_word;
   ifstream myfile;
-  int counter = 0;
-  myfile.open (file_to_clean);
+  myfile.open("lines17.txt");
   ofstream destination_file;
   destination_file.open("clean.txt");
   if (myfile.is_open())
@@ -41,7 +42,6 @@ int clean_file(string file_to_clean) {
       while (! myfile.eof() )
 	{
 	  getline (myfile,line);
-	  the_titles.push_back(line);
 	  istringstream iss(line);
 	  while(iss >> word){
 	    dest_word =  to_lowercase(word);
@@ -49,7 +49,6 @@ int clean_file(string file_to_clean) {
 	      dest_line += dest_word + ' ';
 	    }
 	  }
-	  counter += 1;
 	  dest_line += '\n';
 	}
       destination_file << dest_line;
@@ -61,3 +60,23 @@ int clean_file(string file_to_clean) {
     
   return 0;
 }
+
+int populate_db(){
+  string line;
+  ifstream myfile;
+  myfile.open("db.txt");
+  if (myfile.is_open())
+    {
+      while (! myfile.eof() )
+	{
+	  getline (myfile,line);
+	  the_titles.push_back(line);
+	}
+      myfile.close();
+    }
+
+  else cout << "Unable to open file";
+    
+  return 0;  
+}
+//db.txt, lines17.txt
